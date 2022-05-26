@@ -4,110 +4,168 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-
+import FormHelperText from "@mui/material/FormHelperText";
 import Button from "@mui/material/Button";
-
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 
-const InputSection = () => {
-  const [platform, setPlatform] = useState("");
-  const [currency, setCurrency] = useState("");
+import { useForm, Controller } from "react-hook-form";
 
-  const calculate = () => {
-    console.log(platform, currency);
+const InputSection = () => {
+  const [platform, setPlatform] = useState(0);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log("data: ", data);
   };
 
   return (
     <>
       <Container>
-        <Grid container mt={2} spacing={2}>
-          <Grid item xs={12} md={6}>
-            <Box sx={{ minWidth: 120 }}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">
-                  Plataforma
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={platform}
-                  label="Plataforma"
-                  onChange={(event) => {
-                    setPlatform(event.target.value);
-                  }}
-                >
-                  <MenuItem value={10}>Nintendo</MenuItem>
-                  <MenuItem value={20}>Xbox/Steam</MenuItem>
-                  <MenuItem value={30}>PlayStation</MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <Box sx={{ minWidth: 120 }}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Moneda</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={currency}
-                  label="Moneda"
-                  onChange={(event) => {
-                    setCurrency(event.target.value);
-                  }}
-                >
-                  {platform === 30 ? (
-                    <MenuItem value={20}>USD</MenuItem>
-                  ) : (
-                    [
-                      <MenuItem value={10} key={10}>
-                        Pesos argentinos
-                      </MenuItem>,
-                      <MenuItem value={20} key={20}>
-                        USD
-                      </MenuItem>,
-                    ]
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid container mt={2} spacing={2}>
+            <Grid item xs={12} md={6}>
+              <Box sx={{ minWidth: 120 }}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">
+                    Plataforma
+                  </InputLabel>
+                  <Controller
+                    name="platform"
+                    control={control}
+                    rules={{ required: "Seleccione plataforma" }}
+                    render={({ field: { onChange, value } }) => (
+                      <Select
+                        value={value}
+                        onChange={(e) => {
+                          onChange(e);
+                          setPlatform(e.target.value);
+                        }}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        label="Plataforma"
+                        error={errors.platform ? true : false}
+                      >
+                        <MenuItem value={10}>Nintendo</MenuItem>
+                        <MenuItem value={20}>Xbox/Steam</MenuItem>
+                        <MenuItem value={30}>PlayStation</MenuItem>
+                      </Select>
+                    )}
+                    defaultValue=""
+                  />
+                  {errors.platform && (
+                    <FormHelperText error>
+                      {errors.platform.message}
+                    </FormHelperText>
                   )}
-                </Select>
-              </FormControl>
-            </Box>
-          </Grid>
+                </FormControl>
+              </Box>
+            </Grid>
 
-          <Grid item xs={12} md={5}>
-            <TextField
-              id="outlined-basic"
-              label="Nombre del juego"
-              variant="outlined"
-              fullWidth
-              inputProps={{ maxLength: 50 }}
-              onChange={(event) => {
-                console.log("name: ", event.target.value);
-              }}
-            />
-          </Grid>
+            <Grid item xs={12} md={6}>
+              <Box sx={{ minWidth: 120 }}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Moneda</InputLabel>
+                  <Controller
+                    name="currency"
+                    control={control}
+                    rules={{ required: "Seleccione moneda" }}
+                    render={({ field: { onChange, value } }) => (
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={value}
+                        label="Moneda"
+                        onChange={onChange}
+                        error={errors.currency ? true : false}
+                      >
+                        {platform === 30 ? (
+                          <MenuItem value={20}>USD</MenuItem>
+                        ) : (
+                          [
+                            <MenuItem value={10} key={10}>
+                              Pesos argentinos
+                            </MenuItem>,
+                            <MenuItem value={20} key={20}>
+                              USD
+                            </MenuItem>,
+                          ]
+                        )}
+                      </Select>
+                    )}
+                    defaultValue=""
+                  />
+                  {errors.currency && (
+                    <FormHelperText error>
+                      {errors.currency.message}
+                    </FormHelperText>
+                  )}
+                </FormControl>
+              </Box>
+            </Grid>
 
-          <Grid item xs={12} md={5}>
-            <TextField
-              id="outlined-basic"
-              label="Precio"
-              variant="outlined"
-              type="number"
-              fullWidth
-              onChange={(event) => {
-                console.log(event.target.value);
-              }}
-            />
-          </Grid>
+            <Grid item xs={12} md={5}>
+              <TextField
+                id="outlined-basic"
+                label="Nombre del juego"
+                variant="outlined"
+                fullWidth
+                inputProps={{ maxLength: 50 }}
+                onChange={(event) => {
+                  console.log("name: ", event.target.value);
+                }}
+                {...register("name", {
+                  required: "Ingrese un nombre",
+                  maxLength: {
+                    value: 50,
+                    message: "Nombre debe tener máximo 50 carácteres",
+                  },
+                })}
+                error={errors.name ? true : false}
+                helperText={errors.name ? errors.name.message : null}
+              />
+            </Grid>
 
-          <Grid item xs={12} md={2} textAlign="center">
-            <Button variant="contained" onClick={calculate}>
-              Calcular
-            </Button>
+            <Grid item xs={12} md={5}>
+              <TextField
+                id="outlined-basic"
+                label="Precio"
+                variant="outlined"
+                type="number"
+                fullWidth
+                onChange={(event) => {
+                  console.log(event.target.value);
+                }}
+                {...register("price", {
+                  required: "Ingrese un precio",
+                  maxLength: {
+                    value: 5,
+                    message: "Precio debe tener máximo cinco dígitos",
+                  },
+                  validate: {
+                    positive: (v) =>
+                      parseInt(v) > 0 || "Precio debe ser positivo",
+                  },
+                })}
+                error={errors.price ? true : false}
+                helperText={errors.price ? errors.price.message : null}
+              />
+            </Grid>
+
+            <Grid item xs={12} md={2} textAlign="center">
+              <Button variant="contained" type="submit">
+                Calcular
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
+        </form>
       </Container>
     </>
   );
