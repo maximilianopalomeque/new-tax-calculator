@@ -11,6 +11,7 @@ import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 
 import { useForm, Controller } from "react-hook-form";
+import { calculate } from "../utils/calculate";
 
 const InputSection = () => {
   const [platform, setPlatform] = useState(0);
@@ -22,15 +23,16 @@ const InputSection = () => {
     control,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("data: ", data);
+  const onSubmit = async (data) => {
+    const result = await calculate(data);
+    console.log("result:", result);
   };
 
   return (
     <>
       <Container>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid container mt={2} spacing={2}>
+          <Grid container mt={2} mb={3} spacing={2}>
             <Grid item xs={12} md={6}>
               <Box sx={{ minWidth: 120 }}>
                 <FormControl fullWidth>
@@ -138,7 +140,7 @@ const InputSection = () => {
                 id="outlined-basic"
                 label="Precio"
                 variant="outlined"
-                type="number"
+                type="text"
                 fullWidth
                 onChange={(event) => {
                   console.log(event.target.value);
@@ -151,7 +153,8 @@ const InputSection = () => {
                   },
                   validate: {
                     positive: (v) =>
-                      parseInt(v) > 0 || "Precio debe ser positivo",
+                      parseFloat(v) > 0 ||
+                      "Precio debe ser positivo, mayor a cero y no debe contener letras",
                   },
                 })}
                 error={errors.price ? true : false}

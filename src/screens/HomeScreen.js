@@ -2,8 +2,7 @@ import NavBar from "../components/NavBar";
 import About from "../components/About";
 import InputSection from "../components/InputSection";
 import HowIsCalculated from "../components/HowIsCalculated";
-
-import { Divider } from "@mui/material";
+import Recent from "../components/Recent";
 
 const HomeScreen = () => {
   return (
@@ -12,7 +11,7 @@ const HomeScreen = () => {
       <About />
       <HowIsCalculated />
       <InputSection />
-      <Divider />
+      <Recent />
     </>
   );
 };

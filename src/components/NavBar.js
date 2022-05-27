@@ -7,15 +7,12 @@ import Typography from "@mui/material/Typography";
 
 const NavBar = () => {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1 }} style={{ background: "red" }}>
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Calcu
           </Typography>
-          {/* <IconButton size="large" edge="end" color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton> */}
         </Toolbar>
       </AppBar>
     </Box>
