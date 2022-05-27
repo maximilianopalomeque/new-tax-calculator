@@ -13,8 +13,11 @@ import TextField from "@mui/material/TextField";
 import { useForm, Controller } from "react-hook-form";
 import { calculate } from "../utils/calculate";
 
+import Result from "./Result";
+
 const InputSection = () => {
   const [platform, setPlatform] = useState(0);
+  const [gameData, setGameData] = useState();
 
   const {
     register,
@@ -25,7 +28,8 @@ const InputSection = () => {
 
   const onSubmit = async (data) => {
     const result = await calculate(data);
-    console.log("result:", result);
+    const game = { ...data, finalPrice: result };
+    setGameData(game);
   };
 
   return (
@@ -170,6 +174,8 @@ const InputSection = () => {
           </Grid>
         </form>
       </Container>
+
+      <Result gameData={gameData} />
     </>
   );
 };
