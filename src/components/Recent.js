@@ -36,7 +36,7 @@ const Recent = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {recents.map((recent) => (
+                {recents?.map((recent) => (
                   <TableRow
                     // key={recent.name}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
