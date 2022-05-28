@@ -11,7 +11,9 @@ import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 
 import { useForm, Controller } from "react-hook-form";
+
 import { calculate } from "../utils/calculate";
+import { saveInLocalStorage } from "../utils/localStorage";
 
 import Result from "./Result";
 
@@ -30,6 +32,7 @@ const InputSection = () => {
     const result = await calculate(data);
     const game = { ...data, finalPrice: result };
     setGameData(game);
+    saveInLocalStorage(game);
   };
 
   return (
