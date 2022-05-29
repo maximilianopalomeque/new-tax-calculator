@@ -16,11 +16,12 @@ import { calculate } from "../utils/calculate";
 import { saveInLocalStorage } from "../utils/localStorage";
 
 import Result from "./Result";
+import Recent from "../components/Recent";
 
 const InputSection = () => {
   const [platform, setPlatform] = useState(0);
   const [gameData, setGameData] = useState();
-
+  const [recents, setRecents] = useState([]);
   const {
     register,
     handleSubmit,
@@ -32,7 +33,7 @@ const InputSection = () => {
     const result = await calculate(data);
     const game = { ...data, finalPrice: result };
     setGameData(game);
-    saveInLocalStorage(game);
+    setRecents([game, ...recents]);
   };
 
   return (
@@ -179,6 +180,7 @@ const InputSection = () => {
       </Container>
 
       <Result gameData={gameData} />
+      <Recent recents={recents} />
     </>
   );
 };

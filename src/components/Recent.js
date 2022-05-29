@@ -13,14 +13,7 @@ import Paper from "@mui/material/Paper";
 
 import { getFromLocalStorage } from "../utils/localStorage";
 
-const Recent = () => {
-  const [recents, setRecents] = useState([]);
-
-  useEffect(() => {
-    const recentSearches = getFromLocalStorage();
-    setRecents(recentSearches);
-  }, []);
-
+const Recent = ({ recents }) => {
   return (
     <>
       <Divider variant="middle">Recientes</Divider>
